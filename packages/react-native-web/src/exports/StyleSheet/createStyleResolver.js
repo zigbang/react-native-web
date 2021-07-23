@@ -163,10 +163,13 @@ export default function createStyleResolver() {
         (props, styleProp) => {
           const value = localizedStyle[styleProp];
           if (value != null) {
-            const className = getClassName(styleProp, value);
-            if (className) {
-              props.classList.push(className);
-            } else {
+            // https://github.com/necolas/react-native-web/issues/2007
+            // 위 사항에 대한 단기 해결방법을 위해 className 을 찾지 않도록 수정
+            //
+            // const className = getClassName(styleProp, value);
+            // if (className) {
+            //   props.classList.push(className);
+            // } else {
               // Certain properties and values are not transformed by 'createReactDOMStyle' as they
               // require more complex transforms into multiple CSS rules. Here we assume that StyleManager
               // can bind these styles to a className, and prevent them becoming invalid inline-styles.
@@ -191,7 +194,7 @@ export default function createStyleResolver() {
                 // 4x slower render
                 props.style[styleProp] = value;
               }
-            }
+            // }
           }
           return props;
         },
