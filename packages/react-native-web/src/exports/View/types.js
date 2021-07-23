@@ -162,6 +162,7 @@ export type ViewProps = {
   onStartShouldSetResponderCapture?: (e: any) => boolean,
   pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto',
   style?: GenericStyleProp<ViewStyle>,
+  className?: ?string,
   testID?: ?string,
   // unstable
   dataSet?: ?Object,
