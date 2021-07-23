@@ -23,7 +23,7 @@ import i18nStyle from './i18nStyle';
 import { atomic, classic, inline, stringifyValueWithProperty } from './compile';
 import initialRules from './initialRules';
 import modality from './modality';
-import { STYLE_ELEMENT_ID, STYLE_GROUPS } from './constants';
+import { STYLE_ELEMENT_ID, STYLE_GROUPS, STYLE_SHORT_FORM_EXPANSIONS } from './constants';
 
 export default function createStyleResolver() {
   let inserted, sheet, cache;
@@ -153,7 +153,7 @@ export default function createStyleResolver() {
       return resolved[dir][key];
     }
 
-    const flatStyle = flattenStyle(style);
+    const flatStyle = getLongFormProperties(flattenStyle(style));
     const localizedStyle = createCompileableStyle(i18nStyle(flatStyle));
 
     // slower: convert style object to props and cache
@@ -163,13 +163,10 @@ export default function createStyleResolver() {
         (props, styleProp) => {
           const value = localizedStyle[styleProp];
           if (value != null) {
-            // https://github.com/necolas/react-native-web/issues/2007
-            // 위 사항에 대한 단기 해결방법을 위해 className 을 찾지 않도록 수정
-            //
-            // const className = getClassName(styleProp, value);
-            // if (className) {
-            //   props.classList.push(className);
-            // } else {
+            const className = getClassName(styleProp, value);
+            if (className) {
+              props.classList.push(className);
+            } else {
               // Certain properties and values are not transformed by 'createReactDOMStyle' as they
               // require more complex transforms into multiple CSS rules. Here we assume that StyleManager
               // can bind these styles to a className, and prevent them becoming invalid inline-styles.
@@ -194,7 +191,7 @@ export default function createStyleResolver() {
                 // 4x slower render
                 props.style[styleProp] = value;
               }
-            // }
+            }
           }
           return props;
         },
@@ -255,3 +252,41 @@ const createCacheKey = (id) => {
 };
 
 const classListToString = (list) => list.join(' ').trim();
+
+const getLongFormProperties = function (style) {
+  if (!style) return {};
+
+  const resolvedStyle = {};
+  Object.keys(style)
+    .sort()
+    .forEach(function (key) {
+      const value = style[key];
+      switch (key) {
+        case 'flex': {
+          if (value === -1) {
+            resolvedStyle.flexGrow = 0;
+            resolvedStyle.flexShrink = 1;
+            resolvedStyle.flexBasis = 'auto';
+          } else {
+            resolvedStyle.flexGrow = value;
+            resolvedStyle.flexShrink = 1;
+            resolvedStyle.flexBasis = '0%';
+          }
+          break;
+        }
+        default: {
+          const longFormProperties = STYLE_SHORT_FORM_EXPANSIONS[key];
+          if (longFormProperties) {
+            longFormProperties.forEach(function (longForm, i) {
+              if (typeof style[longForm] === 'undefined') {
+                resolvedStyle[longForm] = value;
+              }
+            });
+          } else {
+            resolvedStyle[key] = value;
+          }
+        }
+      }
+    });
+  return resolvedStyle;
+};
