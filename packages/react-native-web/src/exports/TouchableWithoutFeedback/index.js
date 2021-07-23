@@ -57,6 +57,7 @@ const forwardPropsList = {
   onBlur: true,
   onFocus: true,
   onLayout: true,
+  className: true,
   testID: true
 };
 
