@@ -101,7 +101,7 @@ const View: React.AbstractComponent<ViewProps, HTMLElement & PlatformMethods> = 
     const style = StyleSheet.compose(hasTextAncestor && styles.inline, props.style);
 
     const supportedProps = pickProps(props);
-    supportedProps.classList = classList;
+    supportedProps.classList = [].concat(props.className, classList);
     supportedProps.style = style;
     if (props.href != null) {
       component = 'a';

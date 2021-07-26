@@ -13,6 +13,7 @@ export const defaultProps = {
   nativeID: true,
   ref: true,
   suppressHydrationWarning: true,
+  className: true,
   testID: true
 };
 

@@ -337,7 +337,7 @@ const TextInput: React.AbstractComponent<
   supportedProps.autoCapitalize = autoCapitalize;
   supportedProps.autoComplete = autoComplete || autoCompleteType || 'on';
   supportedProps.autoCorrect = autoCorrect ? 'on' : 'off';
-  supportedProps.classList = classList;
+  supportedProps.classList = [].concat(props.className, classList);
   // 'auto' by default allows browsers to infer writing direction
   supportedProps.dir = dir !== undefined ? dir : 'auto';
   supportedProps.enterKeyHint = returnKeyType;
