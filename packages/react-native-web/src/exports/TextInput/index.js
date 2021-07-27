@@ -375,6 +375,7 @@ const classes = css.create({
     borderRadius: 0,
     boxSizing: 'border-box',
     font: '14px System',
+    lineHeight: 'inherit',
     margin: 0,
     padding: 0,
     resize: 'none'

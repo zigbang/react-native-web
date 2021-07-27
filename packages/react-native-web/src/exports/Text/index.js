@@ -170,6 +170,7 @@ const classes = css.create({
     color: 'black',
     display: 'inline',
     font: '14px System',
+    lineHeight: 'inherit',
     margin: 0,
     padding: 0,
     whiteSpace: 'pre-wrap',
