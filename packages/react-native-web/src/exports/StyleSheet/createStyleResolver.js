@@ -164,7 +164,7 @@ export default function createStyleResolver() {
           const value = localizedStyle[styleProp];
           if (value != null) {
             const className = getClassName(styleProp, value);
-            if (className) {
+            if (className && key) {
               props.classList.push(className);
             } else {
               // Certain properties and values are not transformed by 'createReactDOMStyle' as they
