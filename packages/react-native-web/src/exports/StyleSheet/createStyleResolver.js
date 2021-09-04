@@ -23,7 +23,7 @@ import i18nStyle from './i18nStyle';
 import { atomic, classic, inline, stringifyValueWithProperty } from './compile';
 import initialRules from './initialRules';
 import modality from './modality';
-import { STYLE_ELEMENT_ID, STYLE_GROUPS, STYLE_SHORT_FORM_EXPANSIONS } from './constants';
+import { STYLE_ELEMENT_ID, STYLE_GROUPS } from './constants';
 
 export default function createStyleResolver() {
   let inserted, sheet, cache;
@@ -153,7 +153,7 @@ export default function createStyleResolver() {
       return resolved[dir][key];
     }
 
-    const flatStyle = getLongFormProperties(flattenStyle(style));
+    const flatStyle = flattenStyle(style);
     const localizedStyle = createCompileableStyle(i18nStyle(flatStyle));
 
     // slower: convert style object to props and cache
@@ -252,41 +252,3 @@ const createCacheKey = (id) => {
 };
 
 const classListToString = (list) => list.join(' ').trim();
-
-const getLongFormProperties = function (style) {
-  if (!style) return {};
-
-  const resolvedStyle = {};
-  Object.keys(style)
-    .sort()
-    .forEach(function (key) {
-      const value = style[key];
-      switch (key) {
-        case 'flex': {
-          if (value === -1) {
-            resolvedStyle.flexGrow = 0;
-            resolvedStyle.flexShrink = 1;
-            resolvedStyle.flexBasis = 'auto';
-          } else {
-            resolvedStyle.flexGrow = value;
-            resolvedStyle.flexShrink = 1;
-            resolvedStyle.flexBasis = '0%';
-          }
-          break;
-        }
-        default: {
-          const longFormProperties = STYLE_SHORT_FORM_EXPANSIONS[key];
-          if (longFormProperties) {
-            longFormProperties.forEach(function (longForm, i) {
-              if (typeof style[longForm] === 'undefined') {
-                resolvedStyle[longForm] = value;
-              }
-            });
-          } else {
-            resolvedStyle[key] = value;
-          }
-        }
-      }
-    });
-  return resolvedStyle;
-};
