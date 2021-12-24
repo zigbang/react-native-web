@@ -78,3 +78,7 @@ export { default as DeviceEventEmitter } from './exports/DeviceEventEmitter';
 // hooks
 export { default as useColorScheme } from './exports/useColorScheme';
 export { default as useWindowDimensions } from './exports/useWindowDimensions';
+
+// custom
+export { default as createReactDOMStyle } from './exports/StyleSheet/createReactDOMStyle';
+export { default as prefixStyles } from './modules/prefixStyles';
