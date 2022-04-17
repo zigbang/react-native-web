@@ -155,6 +155,7 @@ export default function createStyleResolver() {
 
     const flatStyle = flattenStyle(style);
     const localizedStyle = createCompileableStyle(i18nStyle(flatStyle));
+    let isInlined = false;
 
     // slower: convert style object to props and cache
     const props = Object.keys(localizedStyle)
@@ -164,7 +165,7 @@ export default function createStyleResolver() {
           const value = localizedStyle[styleProp];
           if (value != null) {
             const className = getClassName(styleProp, value);
-            if (className && key) {
+            if (className && !isInlined) {
               props.classList.push(className);
             } else {
               // Certain properties and values are not transformed by 'createReactDOMStyle' as they
@@ -185,6 +186,7 @@ export default function createStyleResolver() {
                   });
                 });
               } else {
+                isInlined = true;
                 if (!props.style) {
                   props.style = {};
                 }
