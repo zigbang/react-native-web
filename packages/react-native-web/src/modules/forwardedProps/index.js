@@ -1,5 +1,5 @@
 /**
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -10,14 +10,66 @@
 export const defaultProps = {
   children: true,
   dataSet: true,
-  nativeID: true,
+  dir: true,
+  id: true,
   ref: true,
   suppressHydrationWarning: true,
   className: true,
-  testID: true
+  testID: true,
+  tabIndex: true,
+  // @deprecated
+  focusable: true,
+  nativeID: true
 };
 
 export const accessibilityProps = {
+  'aria-activedescendant': true,
+  'aria-atomic': true,
+  'aria-autocomplete': true,
+  'aria-busy': true,
+  'aria-checked': true,
+  'aria-colcount': true,
+  'aria-colindex': true,
+  'aria-colspan': true,
+  'aria-controls': true,
+  'aria-current': true,
+  'aria-describedby': true,
+  'aria-details': true,
+  'aria-disabled': true,
+  'aria-errormessage': true,
+  'aria-expanded': true,
+  'aria-flowto': true,
+  'aria-haspopup': true,
+  'aria-hidden': true,
+  'aria-invalid': true,
+  'aria-keyshortcuts': true,
+  'aria-label': true,
+  'aria-labelledby': true,
+  'aria-level': true,
+  'aria-live': true,
+  'aria-modal': true,
+  'aria-multiline': true,
+  'aria-multiselectable': true,
+  'aria-orientation': true,
+  'aria-owns': true,
+  'aria-placeholder': true,
+  'aria-posinset': true,
+  'aria-pressed': true,
+  'aria-readonly': true,
+  'aria-required': true,
+  role: true,
+  'aria-roledescription': true,
+  'aria-rowcount': true,
+  'aria-rowindex': true,
+  'aria-rowspan': true,
+  'aria-selected': true,
+  'aria-setsize': true,
+  'aria-sort': true,
+  'aria-valuemax': true,
+  'aria-valuemin': true,
+  'aria-valuenow': true,
+  'aria-valuetext': true,
+  // @deprecated
   accessibilityActiveDescendant: true,
   accessibilityAtomic: true,
   accessibilityAutoComplete: true,
@@ -63,19 +115,23 @@ export const accessibilityProps = {
   accessibilityValueMax: true,
   accessibilityValueMin: true,
   accessibilityValueNow: true,
-  accessibilityValueText: true,
-  dir: true,
-  focusable: true,
-  // Deprecated
-  accessible: true,
-  accessibilityState: true,
-  accessibilityValue: true
+  accessibilityValueText: true
 };
 
 export const clickProps = {
   onClick: true,
-  onClickCapture: true,
-  onContextMenu: true
+  onAuxClick: true,
+  onContextMenu: true,
+  onGotPointerCapture: true,
+  onLostPointerCapture: true,
+  onPointerCancel: true,
+  onPointerDown: true,
+  onPointerEnter: true,
+  onPointerMove: true,
+  onPointerLeave: true,
+  onPointerOut: true,
+  onPointerOver: true,
+  onPointerUp: true
 };
 
 export const focusProps = {
@@ -112,6 +168,5 @@ export const touchProps = {
 };
 
 export const styleProps = {
-  classList: true,
   style: true
 };

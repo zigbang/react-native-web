@@ -1,13 +1,12 @@
 /**
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
 import * as React from 'react';
-import { act } from 'react-dom/test-utils';
-import { cleanup, render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import useMergeRefs from '..';
 
 describe('modules/useMergeRefs', () => {
@@ -15,8 +14,6 @@ describe('modules/useMergeRefs', () => {
     const mergedRef = useMergeRefs(...refs);
     return <div ref={mergedRef} {...rest} />;
   }
-
-  afterEach(cleanup);
 
   test('handles no refs', () => {
     act(() => {
@@ -33,7 +30,9 @@ describe('modules/useMergeRefs', () => {
 
     act(() => {
       render(
-        <TestComponent refs={[callbackRef1, callbackRef2, objectRef1, objectRef2, nullRef]} />
+        <TestComponent
+          refs={[callbackRef1, callbackRef2, objectRef1, objectRef2, nullRef]}
+        />
       );
     });
 

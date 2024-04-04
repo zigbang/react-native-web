@@ -14,97 +14,79 @@ Fork, then clone the repo:
 git clone https://github.com/your-username/react-native-web.git
 ```
 
-Install dependencies (requires [yarn](https://yarnpkg.com/en/docs/install)):
+Install dependencies (requires Node.js >= 16.0):
 
 ```
-yarn
+npm install
 ```
 
-## Automated tests
+## Build
 
-To run the linter:
-
-```
-yarn lint
-```
-
-To run flow:
+Build a specific package:
 
 ```
-yarn flow
+npm run build -w <package-name>
 ```
 
-To run the unit tests:
+For example, this will build `react-native-web`:
 
 ```
-yarn jest
+npm run build -w react-native-web
 ```
 
-…in watch mode:
+Build all packages that can be built:
 
 ```
-yarn jest --watch
+npm run build
 ```
 
-To run all these automated tests:
+## Develop
+
+Develop a specific package:
 
 ```
-yarn test
+npm run dev -w <package-name>
 ```
 
-## Compile and build
-
-To compile the `react-native-web` source code:
+For example, this command will watch and rebuild the `react-native-web` package:
 
 ```
-yarn compile
+npm run dev -w react-native-web
 ```
 
-…in watch mode:
+And this command will watch and rebuild the `react-native-web-examples` package:
 
 ```
-yarn compile --watch
+npm run dev -w react-native-web-examples
 ```
 
-## Documentation
+## Test
 
-To run the documentation website:
-
-```
-yarn docs
-```
-
-## Examples
-
-To run the examples app:
+Run the monorepo linter:
 
 ```
-yarn examples
+npm run lint
 ```
 
-When you're also making changes to the 'react-native-web' source files, run this command in another process:
+Run the monorepo type checker:
 
 ```
-yarn compile --watch
+npm run flow
 ```
 
-## Benchmarks
-
-To run the benchmarks locally:
+Run the monorepo unit tests:
 
 ```
-yarn benchmarks
-open ./packages/benchmarks/dist/index.html
+npm run unit
 ```
 
-To develop against these benchmarks:
+Run all the automated tests:
 
 ```
-yarn compile --watch
-yarn benchmarks --watch
+npm run test
 ```
 
-### New Features
+## New Features
 
 Please open an issue with a proposal for a new feature or refactoring before starting on the work. We don't want you to waste your efforts on a pull request that we won't want to accept.
 
@@ -115,19 +97,15 @@ Please open an issue with a proposal for a new feature or refactoring before sta
 1. Fork the repository and create your branch from `master`.
 2. If you've added code that should be tested, add tests!
 3. If you've changed APIs, update the documentation.
-4. Ensure the tests pass (`yarn test`).
+4. Ensure the tests pass (`npm run test`).
 
-You should see a pre-commit hook run before each commit. If it does not, you may need to reset you Git hookspath:
-
-```
-git config --unset core.hookspath
-```
+You should see a pre-commit hook run before each commit.
 
 You can now submit a pull request, referencing any issues it addresses.
 
 Please try to keep your pull request focused in scope and avoid including unrelated commits.
 
-After you have submitted your pull request, we'll try to get back to you as soon as possible. We may suggest some changes or improvements.
+After you have submitted your pull request, it's recommended that **you** perform the first code review. We'll try to get back to you as soon as possible and may suggest changes.
 
 Thank you for contributing!
 
@@ -136,11 +114,11 @@ Thank you for contributing!
 To commit, publish, and push a final version:
 
 ```
-yarn release <version>
+npm run release -- <version> --otp=<otp-code>
 ```
 
 Release candidates or versions that you'd like to publish to npm, but do not want to produce a commit and push it to GitHub:
 
 ```
-yarn release <version> --skip-git
+npm run release -- <version> --skip-git
 ```

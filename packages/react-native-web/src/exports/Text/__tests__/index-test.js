@@ -1,11 +1,16 @@
-/* eslint-env jasmine, jest */
+/**
+ * Copyright (c) Nicolas Gallagher.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 /* eslint-disable react/jsx-no-bind */
 
 import React from 'react';
 import Text from '../';
-import { act } from 'react-dom/test-utils';
-import { createEventTarget } from 'dom-event-testing-library';
-import { render } from '@testing-library/react';
+import { createEventTarget, setPointerEvent } from 'dom-event-testing-library';
+import { act, render } from '@testing-library/react';
 
 describe('components/Text', () => {
   test('default', () => {
@@ -18,47 +23,54 @@ describe('components/Text', () => {
     expect(container.firstChild).toMatchSnapshot();
   });
 
-  describe('prop "accessibilityLabel"', () => {
+  describe('prop "aria-label"', () => {
     test('value is set', () => {
-      const { container } = render(<Text accessibilityLabel="accessibility label" />);
+      const { container } = render(<Text aria-label="accessibility label" />);
       expect(container.firstChild).toMatchSnapshot();
     });
   });
 
-  describe('prop "accessibilityLabelledBy"', () => {
+  describe('prop "aria-labelledby"', () => {
     test('value is set', () => {
-      const { container } = render(<Text accessibilityLabelledBy="123" />);
+      const { container } = render(<Text aria-labelledby="123" />);
       expect(container.firstChild).toMatchSnapshot();
     });
   });
 
-  describe('prop "accessibilityLiveRegion"', () => {
+  describe('prop "aria-live"', () => {
     test('value is set', () => {
-      const { container } = render(<Text accessibilityLiveRegion="polite" />);
+      const { container } = render(<Text aria-live="polite" />);
       expect(container.firstChild).toMatchSnapshot();
     });
   });
 
-  describe('prop "accessibilityRole"', () => {
+  describe('prop "role"', () => {
     test('value is set', () => {
-      const { container } = render(<Text accessibilityRole="none" />);
+      const { container } = render(<Text role="none" />);
       expect(container.firstChild).toMatchSnapshot();
     });
 
     test('value is "button"', () => {
-      const { container } = render(<Text accessibilityRole="button" />);
+      const { container } = render(<Text role="button" />);
       expect(container.firstChild).toMatchSnapshot();
     });
 
     test('value alters HTML element', () => {
-      const { container } = render(<Text accessibilityRole="article" />);
+      const { container } = render(<Text role="article" />);
       expect(container.firstChild).toMatchSnapshot();
     });
   });
 
-  test('allows "dir" to be overridden', () => {
-    const { container } = render(<Text dir="rtl" />);
-    expect(container.firstChild).toMatchSnapshot();
+  describe('prop "dir"', () => {
+    test('value is "ltr"', () => {
+      const { container } = render(<Text dir="ltr" />);
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    test('value is "rtl"', () => {
+      const { container } = render(<Text dir="rtl" />);
+      expect(container.firstChild).toMatchSnapshot();
+    });
   });
 
   describe('prop "href"', () => {
@@ -68,14 +80,18 @@ describe('components/Text', () => {
     });
 
     test('href with accessibilityRole', () => {
-      const { container } = render(<Text accessibilityRole="none" href="https://example.com" />);
+      const { container } = render(
+        <Text accessibilityRole="none" href="https://example.com" />
+      );
       expect(container.firstChild).toMatchSnapshot();
     });
   });
 
   describe('prop "hrefAttrs"', () => {
     test('requires "href"', () => {
-      const { container } = render(<Text hrefAttrs={{ download: 'filename.jpg' }} />);
+      const { container } = render(
+        <Text hrefAttrs={{ download: 'filename.jpg' }} />
+      );
       expect(container.firstChild).toMatchSnapshot();
     });
 
@@ -85,7 +101,9 @@ describe('components/Text', () => {
         rel: 'nofollow',
         target: '_blank'
       };
-      const { container } = render(<Text href="https://example.com" hrefAttrs={hrefAttrs} />);
+      const { container } = render(
+        <Text href="https://example.com" hrefAttrs={hrefAttrs} />
+      );
       expect(container.firstChild).toMatchSnapshot();
     });
 
@@ -93,7 +111,9 @@ describe('components/Text', () => {
       const hrefAttrs = {
         target: 'blank'
       };
-      const { container } = render(<Text href="https://example.com" hrefAttrs={hrefAttrs} />);
+      const { container } = render(
+        <Text href="https://example.com" hrefAttrs={hrefAttrs} />
+      );
       expect(container.firstChild).toMatchSnapshot();
     });
 
@@ -103,7 +123,9 @@ describe('components/Text', () => {
         rel: null,
         target: null
       };
-      const { container } = render(<Text href="https://example.com" hrefAttrs={hrefAttrs} />);
+      const { container } = render(
+        <Text href="https://example.com" hrefAttrs={hrefAttrs} />
+      );
       expect(container.firstChild).toMatchSnapshot();
     });
   });
@@ -116,6 +138,16 @@ describe('components/Text', () => {
 
     test('fr', () => {
       const { container } = render(<Text lang="fr" />);
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    test('ar', () => {
+      const { container } = render(<Text lang="ar" />);
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    test('with dir', () => {
+      const { container } = render(<Text dir="ltr" lang="ar" />);
       expect(container.firstChild).toMatchSnapshot();
     });
   });
@@ -198,6 +230,28 @@ describe('components/Text', () => {
     });
   });
 
+  describe('prop "onPointerDown"', () => {
+    beforeEach(() => {
+      setPointerEvent(true);
+    });
+    afterEach(() => {
+      setPointerEvent(false);
+    });
+
+    test('is called', () => {
+      const onPointerDown = jest.fn();
+      const ref = React.createRef();
+      act(() => {
+        render(<Text onPointerDown={onPointerDown} ref={ref} />);
+      });
+      const target = createEventTarget(ref.current);
+      act(() => {
+        target.pointerdown({ pointerType: 'touch' });
+      });
+      expect(onPointerDown).toBeCalled();
+    });
+  });
+
   describe('prop "onPress"', () => {
     test('is called', () => {
       const onPress = jest.fn();
@@ -238,7 +292,9 @@ describe('components/Text', () => {
       const ref = jest.fn();
       let rerender;
       act(() => {
-        ({ rerender } = render(<Text nativeID="123" ref={ref} style={{ borderWidth: 5 }} />));
+        ({ rerender } = render(
+          <Text nativeID="123" ref={ref} style={{ borderWidth: 5 }} />
+        ));
       });
       expect(ref).toHaveBeenCalledTimes(1);
       act(() => {
@@ -256,7 +312,6 @@ describe('components/Text', () => {
       expect(typeof node.measure === 'function');
       expect(typeof node.measureLayout === 'function');
       expect(typeof node.measureInWindow === 'function');
-      expect(typeof node.setNativeProps === 'function');
     });
   });
 

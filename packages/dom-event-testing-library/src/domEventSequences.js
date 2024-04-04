@@ -1,5 +1,5 @@
 /**
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Nicolas Gallagher.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -105,7 +105,7 @@ function getPointerType(payload) {
  * - 'targetTouches' contains any of the remaining active pointers for the target.
  */
 
-export function contextmenu(target, defaultPayload) {
+export function contextmenu(target, defaultPayload = {}) {
   const dispatch = (arg) => target.dispatchEvent(arg);
   const pointerType = getPointerType(defaultPayload);
 
@@ -158,7 +158,9 @@ export function contextmenu(target, defaultPayload) {
       }
       dispatch(domEvents.mousedown({ ...payload, ctrlKey }));
       if (platform.get() === 'mac') {
-        dispatch(domEvents.contextmenu({ button, buttons, ctrlKey, preventDefault }));
+        dispatch(
+          domEvents.contextmenu({ button, buttons, ctrlKey, preventDefault })
+        );
       }
     } else {
       const button = buttonType.secondary;
@@ -167,7 +169,9 @@ export function contextmenu(target, defaultPayload) {
         dispatch(domEvents.pointerdown({ ...payload, button, buttons }));
       }
       dispatch(domEvents.mousedown({ ...payload, button, buttons }));
-      dispatch(domEvents.contextmenu({ ...payload, button, buttons, preventDefault }));
+      dispatch(
+        domEvents.contextmenu({ ...payload, button, buttons, preventDefault })
+      );
     }
   }
 }
@@ -323,7 +327,9 @@ export function pointermove(target, defaultPayload) {
 
   if (pointerType === 'mouse') {
     if (hasPointerEvent()) {
-      dispatch(domEvents.pointermove({ pressure: 0.5, button: -1, ...payload }));
+      dispatch(
+        domEvents.pointermove({ pressure: 0.5, button: -1, ...payload })
+      );
     }
     dispatch(domEvents.mousemove(payload));
   } else {
@@ -354,7 +360,8 @@ export function pointerup(target, defaultPayload) {
   };
 
   const isPrimaryButton = payload.button === buttonType.primary;
-  const isContextMenuAction = platform.get() === 'mac' && payload.ctrlKey === true;
+  const isContextMenuAction =
+    platform.get() === 'mac' && payload.ctrlKey === true;
 
   if (pointerType === 'mouse') {
     if (hasPointerEvent()) {

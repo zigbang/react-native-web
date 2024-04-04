@@ -1,10 +1,131 @@
-/* eslint-env jasmine, jest */
+/**
+ * Copyright (c) Nicolas Gallagher.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 import createDOMProps from '..';
 
 const createProps = (props) => createDOMProps(null, props);
 
 describe('modules/createDOMProps', () => {
+  test('web props', () => {
+    const props = {
+      'aria-activedescendant': 'activedescendant',
+      'aria-atomic': true,
+      'aria-autocomplete': 'list',
+      'aria-busy': true,
+      'aria-checked': true,
+      'aria-columncount': 5,
+      'aria-columnindex': 3,
+      'aria-columnspan': 2,
+      'aria-controls': 'controls',
+      'aria-current': 'current',
+      'aria-describedby': 'describedby',
+      'aria-details': 'details',
+      'aria-disabled': true,
+      'aria-errormessage': 'errormessage',
+      'aria-expanded': true,
+      'aria-flowto': 'flowto',
+      'aria-haspopup': true,
+      'aria-hidden': true,
+      'aria-invalid': true,
+      'aria-keyshortcuts': 'Cmd+S',
+      'aria-label': 'label',
+      'aria-labelledby': 'labelledby',
+      'aria-level': 3,
+      'aria-live': 'polite',
+      'aria-modal': true,
+      'aria-multiline': true,
+      'aria-multiselectable': true,
+      'aria-orientation': 'portrait',
+      'aria-owns': 'owns',
+      'aria-placeholder': 'placeholder',
+      'aria-posinset': 5,
+      'aria-pressed': true,
+      'aria-readonly': true,
+      'aria-required': true,
+      role: 'main',
+      'aria-roledescription': 'roledescription',
+      'aria-rowcount': 5,
+      'aria-rowindex': 3,
+      'aria-rowspan': 3,
+      'aria-selected': true,
+      'aria-setsize': 5,
+      'aria-sort': 'ascending',
+      'aria-valuemax': 5,
+      'aria-valuemin': 0,
+      'aria-valuenow': 3,
+      'aria-valuetext': '3',
+      className: 'className',
+      dataSet: {
+        custom: 'custom'
+      },
+      id: 'id',
+      tabIndex: 0,
+      testID: 'testID'
+    };
+
+    const _props = createProps(props);
+    expect(_props).toMatchInlineSnapshot(`
+      {
+        "aria-activedescendant": "activedescendant",
+        "aria-atomic": "activedescendant",
+        "aria-autocomplete": "list",
+        "aria-busy": true,
+        "aria-checked": true,
+        "aria-columncount": 5,
+        "aria-columnindex": 3,
+        "aria-columnspan": 2,
+        "aria-controls": "controls",
+        "aria-current": "current",
+        "aria-describedby": "describedby",
+        "aria-details": "details",
+        "aria-disabled": true,
+        "aria-errormessage": "errormessage",
+        "aria-expanded": true,
+        "aria-flowto": "flowto",
+        "aria-haspopup": true,
+        "aria-hidden": true,
+        "aria-invalid": true,
+        "aria-keyshortcuts": "Cmd+S",
+        "aria-label": "label",
+        "aria-labelledby": "labelledby",
+        "aria-level": 3,
+        "aria-live": "polite",
+        "aria-modal": true,
+        "aria-multiline": true,
+        "aria-multiselectable": true,
+        "aria-orientation": "portrait",
+        "aria-owns": "owns",
+        "aria-placeholder": "placeholder",
+        "aria-posinset": 5,
+        "aria-pressed": true,
+        "aria-readonly": true,
+        "aria-required": true,
+        "aria-roledescription": "roledescription",
+        "aria-rowcount": 5,
+        "aria-rowindex": 3,
+        "aria-rowspan": 3,
+        "aria-selected": true,
+        "aria-setsize": 5,
+        "aria-sort": "ascending",
+        "aria-valuemax": 5,
+        "aria-valuemin": 0,
+        "aria-valuenow": 3,
+        "aria-valuetext": "3",
+        "className": "className",
+        "data-custom": "custom",
+        "data-testid": "testID",
+        "id": "id",
+        "role": "main",
+        "tabIndex": 0,
+      }
+    `);
+  });
+
+  // @deprecated
   describe('focus-related accessibility attributes', () => {
     test('with no accessibility props', () => {
       expect(createProps({})).toEqual({});
@@ -32,15 +153,15 @@ describe('modules/createDOMProps', () => {
       });
 
       test('when "accessibilityDisabled" is true', () => {
-        expect(createProps({ accessibilityRole, accessibilityDisabled: true })).toEqual(
-          expect.objectContaining({ 'aria-disabled': true })
-        );
+        expect(
+          createProps({ accessibilityRole, accessibilityDisabled: true })
+        ).toEqual(expect.objectContaining({ 'aria-disabled': true }));
       });
 
       test('when "disabled" is false', () => {
-        expect(createProps({ accessibilityRole, accessibilityDisabled: false })).toEqual(
-          expect.not.objectContaining({ tabIndex: '-1' })
-        );
+        expect(
+          createProps({ accessibilityRole, accessibilityDisabled: false })
+        ).toEqual(expect.not.objectContaining({ tabIndex: '-1' }));
       });
     });
 
@@ -64,15 +185,15 @@ describe('modules/createDOMProps', () => {
       });
 
       test('when "accessibilityDisabled" is true', () => {
-        expect(createProps({ accessibilityRole, accessibilityDisabled: true })).toEqual(
-          expect.objectContaining({ 'aria-disabled': true })
-        );
+        expect(
+          createProps({ accessibilityRole, accessibilityDisabled: true })
+        ).toEqual(expect.objectContaining({ 'aria-disabled': true }));
       });
 
       test('when "accessibilityDisabled" is false', () => {
-        expect(createProps({ accessibilityRole, accessibilityDisabled: false })).toEqual(
-          expect.objectContaining({ tabIndex: '0' })
-        );
+        expect(
+          createProps({ accessibilityRole, accessibilityDisabled: false })
+        ).toEqual(expect.objectContaining({ tabIndex: '0' }));
       });
     };
 
@@ -107,76 +228,22 @@ describe('modules/createDOMProps', () => {
     expect(props['aria-live']).toEqual('off');
   });
 
+  test('prop "accessibilityRequired" becomes "aria-required" and "required"', () => {
+    const accessibilityRequired = false;
+    const props = createDOMProps('input', { accessibilityRequired });
+    expect(props['aria-required']).toEqual(false);
+    expect(props.required).toEqual(false);
+  });
+
   test('prop "accessibilityRole" becomes "role"', () => {
     const accessibilityRole = 'button';
     const props = createProps({ accessibilityRole });
     expect(props.role).toEqual('button');
   });
 
-  describe('prop "accessibilityState"', () => {
-    function createAccessibilityState(value) {
-      return {
-        busy: value,
-        checked: value,
-        disabled: value,
-        expanded: value,
-        grabbed: value,
-        hidden: value,
-        invalid: value,
-        modal: value,
-        pressed: value,
-        readonly: value,
-        required: value,
-        selected: value
-      };
-    }
-
-    test('values are "undefined"', () => {
-      const accessibilityState = createAccessibilityState(undefined);
-      const props = createProps({ accessibilityState });
-      expect(props).toMatchSnapshot();
-    });
-
-    test('values are "false"', () => {
-      const accessibilityState = createAccessibilityState(false);
-      const props = createProps({ accessibilityState });
-      expect(props).toMatchSnapshot();
-    });
-
-    test('values are "true"', () => {
-      const accessibilityState = createAccessibilityState(true);
-      const props = createProps({ accessibilityState });
-      expect(props).toMatchSnapshot();
-    });
-  });
-
-  test('prop "className" is preserved', () => {
-    const className = 'external-class-name';
-    const props = createProps({ className });
-    expect(props.className).toEqual(className);
-  });
-
   test('prop "nativeID" becomes "id"', () => {
     const nativeID = 'Example.nativeID';
     const props = createProps({ nativeID });
     expect(props.id).toEqual(nativeID);
-  });
-
-  test('prop "testID" becomes "data-testid"', () => {
-    const testID = 'Example.testID';
-    const props = createProps({ testID });
-    expect(props['data-testid']).toEqual(testID);
-  });
-
-  test('includes cursor style for pressable roles', () => {
-    expect(createDOMProps('span', { accessibilityRole: 'link' }).className).toMatchSnapshot();
-    expect(createDOMProps('span', { accessibilityRole: 'button' }).className).toMatchSnapshot();
-  });
-
-  test('includes base reset style for browser-styled elements', () => {
-    expect(createDOMProps('a').className).toMatchSnapshot();
-    expect(createDOMProps('button').className).toMatchSnapshot();
-    expect(createDOMProps('li').className).toMatchSnapshot();
-    expect(createDOMProps('ul').className).toMatchSnapshot();
   });
 });

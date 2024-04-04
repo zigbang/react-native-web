@@ -1,22 +1,30 @@
-/* eslint-env jasmine, jest */
+/**
+ * Copyright (c) Nicolas Gallagher.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 import ActivityIndicator from '..';
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { createEventTarget } from 'dom-event-testing-library';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 describe('components/ActivityIndicator', () => {
   describe('prop "accessibilityLabel"', () => {
     test('value is set', () => {
-      const { container } = render(<ActivityIndicator accessibilityLabel="accessibility label" />);
+      const { container } = render(
+        <ActivityIndicator accessibilityLabel="accessibility label" />
+      );
       expect(container.firstChild).toMatchSnapshot();
     });
   });
 
   describe('prop "accessibilityLiveRegion"', () => {
     test('value is set', () => {
-      const { container } = render(<ActivityIndicator accessibilityLiveRegion="polite" />);
+      const { container } = render(
+        <ActivityIndicator accessibilityLiveRegion="polite" />
+      );
       expect(container.firstChild).toMatchSnapshot();
     });
   });
@@ -41,14 +49,18 @@ describe('components/ActivityIndicator', () => {
 
   describe('prop "dataSet"', () => {
     test('value is set', () => {
-      const { container } = render(<ActivityIndicator dataSet={{ one: 'one', two: 'two' }} />);
+      const { container } = render(
+        <ActivityIndicator dataSet={{ one: 'one', two: 'two' }} />
+      );
       expect(container.firstChild).toMatchSnapshot();
     });
   });
 
   describe('prop "hidesWhenStopped"', () => {
     test('is "true"', () => {
-      const { container } = render(<ActivityIndicator animating={false} hidesWhenStopped={true} />);
+      const { container } = render(
+        <ActivityIndicator animating={false} hidesWhenStopped={true} />
+      );
       expect(container.firstChild).toMatchSnapshot();
     });
 
@@ -121,7 +133,9 @@ describe('components/ActivityIndicator', () => {
 
   describe('prop "style"', () => {
     test('value is set', () => {
-      const { container } = render(<ActivityIndicator style={{ borderWidth: 5 }} />);
+      const { container } = render(
+        <ActivityIndicator style={{ borderWidth: 5 }} />
+      );
       expect(container.firstChild).toMatchSnapshot();
     });
   });

@@ -1,10 +1,14 @@
-/* eslint-env jasmine, jest */
+/**
+ * Copyright (c) Nicolas Gallagher.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 import React from 'react';
 import TextInput from '..';
-import { act } from 'react-dom/test-utils';
 import { createEventTarget } from 'dom-event-testing-library';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 function findInput(container) {
   return container.querySelector('input');
@@ -101,6 +105,14 @@ describe('components/TextInput', () => {
     });
   });
 
+  describe('prop "caretHidden"', () => {
+    test('value "true"', () => {
+      const { container } = render(<TextInput caretHidden />);
+      const style = window.getComputedStyle(container.firstChild);
+      expect(style.caretColor).toEqual('transparent');
+    });
+  });
+
   describe('prop "clearTextOnFocus"', () => {
     const defaultValue = 'defaultValue';
 
@@ -112,7 +124,9 @@ describe('components/TextInput', () => {
     });
 
     testIfDocumentIsFocused('value "true"', () => {
-      const { container } = render(<TextInput clearTextOnFocus defaultValue={defaultValue} />);
+      const { container } = render(
+        <TextInput clearTextOnFocus defaultValue={defaultValue} />
+      );
       const input = findInput(container);
       input.focus();
       expect(input.node.value).toEqual('');
@@ -151,6 +165,62 @@ describe('components/TextInput', () => {
       const { container } = render(<TextInput editable={false} />);
       const input = findInput(container);
       expect(input.readOnly).toEqual(true);
+    });
+  });
+
+  describe('prop "inputMode"', () => {
+    test('value "decimal"', () => {
+      const { container } = render(<TextInput inputMode="decimal" />);
+      const input = findInput(container);
+      expect(input.inputMode).toEqual('decimal');
+    });
+
+    test('value "email"', () => {
+      const { container } = render(<TextInput inputMode="email" />);
+      const input = findInput(container);
+      expect(input.inputMode).toEqual('email');
+      expect(input.type).toEqual('email');
+    });
+
+    test('default value', () => {
+      const { container } = render(<TextInput inputMode="none" />);
+      const input = findInput(container);
+      expect(input.inputMode).toEqual('none');
+      expect(input.type).toEqual('text');
+    });
+
+    test('value "numeric"', () => {
+      const { container } = render(<TextInput inputMode="numeric" />);
+      const input = findInput(container);
+      expect(input.inputMode).toEqual('numeric');
+    });
+
+    test('value "search"', () => {
+      const { container } = render(<TextInput inputMode="search" />);
+      const input = findInput(container);
+      expect(input.inputMode).toEqual('search');
+      expect(input.type).toEqual('search');
+    });
+
+    test('value "tel"', () => {
+      const { container } = render(<TextInput inputMode="tel" />);
+      const input = findInput(container);
+      expect(input.inputMode).toEqual('tel');
+      expect(input.type).toEqual('tel');
+    });
+
+    test('value "text"', () => {
+      const { container } = render(<TextInput inputMode="text" />);
+      const input = findInput(container);
+      expect(input.inputMode).toEqual('text');
+      expect(input.type).toEqual('text');
+    });
+
+    test('value "url"', () => {
+      const { container } = render(<TextInput inputMode="url" />);
+      const input = findInput(container);
+      expect(input.inputMode).toEqual('url');
+      expect(input.type).toEqual('url');
     });
   });
 
@@ -285,6 +355,7 @@ describe('components/TextInput', () => {
       target.focus();
     });
     expect(onFocus).toHaveBeenCalledTimes(1);
+    target.node.focus();
     expect(TextInput.State.currentlyFocusedField()).toBe(target.node);
   });
 
@@ -506,10 +577,12 @@ describe('components/TextInput', () => {
 
     test.skip('is called on change', () => {
       const onSelectionChange = jest.fn();
-      const { container } = render(<TextInput onSelectionChange={onSelectionChange} />);
+      const { container } = render(
+        <TextInput onSelectionChange={onSelectionChange} />
+      );
       const input = findInput(container);
       // This doesn't cause ReactDOM to trigger 'change' event... ¯\_(ツ)_/¯
-      input.dispatchEvent(new window.Event('change', { bubbles: true }));
+      input.dispatchEvent(new window.Event('input', { bubbles: true }));
       expect(onSelectionChange).toHaveBeenCalledTimes(1);
     });
   });
@@ -534,15 +607,23 @@ describe('components/TextInput', () => {
         <TextInput defaultValue="12345" onSubmitEditing={onSubmitEditing} />
       );
       const input = findInput(container);
-      input.dispatchEvent(keydown({ key: 'Enter', isComposing: true, keyCode: 13 }));
-      input.dispatchEvent(keydown({ key: 'Enter', isComposing: false, keyCode: 229 }));
+      input.dispatchEvent(
+        keydown({ key: 'Enter', isComposing: true, keyCode: 13 })
+      );
+      input.dispatchEvent(
+        keydown({ key: 'Enter', isComposing: false, keyCode: 229 })
+      );
       expect(onSubmitEditing).not.toHaveBeenCalled();
     });
 
     test('multi-line input', () => {
       const onSubmitEditing = jest.fn();
       const { container } = render(
-        <TextInput defaultValue="12345" multiline onSubmitEditing={onSubmitEditing} />
+        <TextInput
+          defaultValue="12345"
+          multiline
+          onSubmitEditing={onSubmitEditing}
+        />
       );
       const textarea = findTextArea(container);
       textarea.dispatchEvent(keydown({ key: 'Enter' }));
@@ -554,12 +635,21 @@ describe('components/TextInput', () => {
       const preventDefault = jest.fn();
 
       const { container } = render(
-        <TextInput blurOnSubmit defaultValue="12345" multiline onSubmitEditing={onSubmitEditing} />
+        <TextInput
+          blurOnSubmit
+          defaultValue="12345"
+          multiline
+          onSubmitEditing={onSubmitEditing}
+        />
       );
       const textarea = findTextArea(container);
-      textarea.dispatchEvent(keydown({ key: 'Enter', preventDefault, shiftKey: true }));
+      textarea.dispatchEvent(
+        keydown({ key: 'Enter', preventDefault, shiftKey: true })
+      );
       // shift+enter should enter newline, not submit
-      expect(onSubmitEditing).not.toHaveBeenCalledWith(expect.objectContaining({ shiftKey: true }));
+      expect(onSubmitEditing).not.toHaveBeenCalledWith(
+        expect.objectContaining({ shiftKey: true })
+      );
       expect(preventDefault).not.toHaveBeenCalled();
 
       textarea.dispatchEvent(keydown({ key: 'Enter', preventDefault }));
@@ -605,11 +695,13 @@ describe('components/TextInput', () => {
   describe('prop "selection"', () => {
     test('set cursor location', () => {
       const cursorLocation = { start: 3, end: 3 };
-      const { container: defaultContainer } = render(<TextInput defaultValue="12345" />);
+      const { container: defaultContainer } = render(
+        <TextInput defaultValue="12345" />
+      );
       const inputDefaultSelection = findInput(defaultContainer);
-      // default selection is 0
-      expect(inputDefaultSelection.selectionStart).toEqual(0);
-      expect(inputDefaultSelection.selectionEnd).toEqual(0);
+      // default selection is at the end
+      expect(inputDefaultSelection.selectionStart).toEqual(5);
+      expect(inputDefaultSelection.selectionEnd).toEqual(5);
 
       const { container: customContainer } = render(
         <TextInput defaultValue="12345" selection={cursorLocation} />

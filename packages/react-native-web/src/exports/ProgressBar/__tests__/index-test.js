@@ -1,4 +1,9 @@
-/* eslint-env jasmine, jest */
+/**
+ * Copyright (c) Nicolas Gallagher.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 import React from 'react';
 import { render } from '@testing-library/react';
@@ -12,7 +17,9 @@ describe('components/ProgressBar', () => {
     });
 
     test('is ignored when "indeterminate" is "true"', () => {
-      const { container } = render(<ProgressBar indeterminate progress={0.5} />);
+      const { container } = render(
+        <ProgressBar indeterminate progress={0.5} />
+      );
       expect(container.firstChild.getAttribute('aria-valuenow')).toBe(null);
     });
   });

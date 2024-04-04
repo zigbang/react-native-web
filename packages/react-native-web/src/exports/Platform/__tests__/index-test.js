@@ -1,4 +1,9 @@
-/* eslint-env jasmine, jest */
+/**
+ * Copyright (c) Nicolas Gallagher.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 import Platform from '../';
 
@@ -10,7 +15,12 @@ describe('apis/Platform', () => {
 
     test('chooses "web"', () => {
       expect(
-        Platform.select({ android: 'android', ios: 'ios', web: 'web', default: 'default' })
+        Platform.select({
+          android: 'android',
+          ios: 'ios',
+          web: 'web',
+          default: 'default'
+        })
       ).toEqual('web');
     });
   });

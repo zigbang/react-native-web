@@ -1,10 +1,14 @@
-/* eslint-env jest */
+/**
+ * Copyright (c) Nicolas Gallagher.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 import CheckBox from '../';
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { createEventTarget } from 'dom-event-testing-library';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 function findCheckbox(container) {
   return container.firstChild.querySelector('input');
@@ -13,7 +17,16 @@ function findCheckbox(container) {
 describe('CheckBox', () => {
   describe('prop "accessibilityLabel"', () => {
     test('value is set', () => {
-      const { container } = render(<CheckBox accessibilityLabel="accessibility label" />);
+      const { container } = render(
+        <CheckBox aria-label="accessibility label" />
+      );
+      expect(container.firstChild).toMatchSnapshot();
+    });
+  });
+
+  describe('prop "accessibilityReadOnly"', () => {
+    test('value is set', () => {
+      const { container } = render(<CheckBox aria-readonly={true} />);
       expect(container.firstChild).toMatchSnapshot();
     });
   });
@@ -27,7 +40,9 @@ describe('CheckBox', () => {
 
   describe('prop "dataSet"', () => {
     test('value is set', () => {
-      const { container } = render(<CheckBox dataSet={{ one: 'one', two: 'two' }} />);
+      const { container } = render(
+        <CheckBox dataSet={{ one: 'one', two: 'two' }} />
+      );
       expect(container.firstChild).toMatchSnapshot();
     });
   });
@@ -46,7 +61,7 @@ describe('CheckBox', () => {
 
   describe('prop "nativeID"', () => {
     test('value is set', () => {
-      const { container } = render(<CheckBox nativeID="123" />);
+      const { container } = render(<CheckBox id="123" />);
       expect(container.firstChild).toMatchSnapshot();
     });
   });
@@ -71,7 +86,9 @@ describe('CheckBox', () => {
   describe('prop "onChange"', () => {
     test('is called with the event object', () => {
       const onChange = jest.fn();
-      const { container } = render(<CheckBox onChange={onChange} value={false} />);
+      const { container } = render(
+        <CheckBox onChange={onChange} value={false} />
+      );
       const checkbox = findCheckbox(container);
       checkbox.click(); // Needed to get ReactDOM to trigger 'change' event
       expect(onChange).toHaveBeenCalled();
@@ -96,7 +113,9 @@ describe('CheckBox', () => {
   describe('prop "onValueChange"', () => {
     test('when value is "false" it receives "true"', () => {
       const onValueChange = jest.fn();
-      const { container } = render(<CheckBox onValueChange={onValueChange} value={false} />);
+      const { container } = render(
+        <CheckBox onValueChange={onValueChange} value={false} />
+      );
       const checkbox = findCheckbox(container);
       checkbox.click(); // Needed to get ReactDOM to trigger 'change' event
       expect(onValueChange).toHaveBeenCalledWith(true);
@@ -104,7 +123,9 @@ describe('CheckBox', () => {
 
     test('when value is "true" it receives "false"', () => {
       const onValueChange = jest.fn();
-      const { container } = render(<CheckBox onValueChange={onValueChange} value />);
+      const { container } = render(
+        <CheckBox onValueChange={onValueChange} value />
+      );
       const checkbox = findCheckbox(container);
       checkbox.click(); // Needed to get ReactDOM to trigger 'change' event
       expect(onValueChange).toHaveBeenCalledWith(false);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Nicolas Gallagher.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -32,9 +32,6 @@ const createEventTarget = (node) => ({
   },
   focus(payload) {
     domEventSequences.focus(node, payload);
-    try {
-      node.focus();
-    } catch (e) {}
   },
   keydown(payload) {
     node.dispatchEvent(domEvents.keydown(payload));
@@ -111,7 +108,9 @@ const createEventTarget = (node) => ({
         left: x,
         right: x + width,
         top: y,
-        bottom: y + height
+        bottom: y + height,
+        x,
+        y
       };
     };
   }
