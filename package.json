@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "0.17.2-zigbang.8",
+  "version": "0.17.2-zigbang.alpha-11",
   "name": "react-ui-monorepo",
   "scripts": {
     "clean": "del-cli ./packages/*/dist",

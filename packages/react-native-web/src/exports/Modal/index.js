@@ -54,7 +54,11 @@ function notifyActiveModalListeners() {
   if (activeModalStack.length === 0) {
     return;
   }
+  
   const activeModalId = activeModalStack[activeModalStack.length - 1];
+  
+  console.log("dddd6", activeModalStack, activeModalId)
+
   activeModalStack.forEach((modalId) => {
     if (modalId in activeModalListeners) {
       activeModalListeners[modalId](modalId === activeModalId);
@@ -77,6 +81,7 @@ function removeActiveModal(modalId) {
 }
 
 function addActiveModal(modalId, listener) {
+  console.log("dddd5", modalId, listener)
   removeActiveModal(modalId);
   activeModalStack.push(modalId);
   activeModalListeners[modalId] = listener;
@@ -112,6 +117,7 @@ const Modal: React.AbstractComponent<
   }, [modalId, onDismiss]);
 
   const onShowCallback = React.useCallback(() => {
+    console.log("dddd7 on modal show called")
     addActiveModal(modalId, setIsActive);
     if (onShow) {
       onShow();

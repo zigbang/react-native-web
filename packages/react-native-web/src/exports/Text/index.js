@@ -122,7 +122,6 @@ const Text: React.AbstractComponent<TextProps, HTMLElement & PlatformMethods> =
     const writingDirection = componentDirection || contextDirection;
 
     const supportedProps = pickProps(props);
-    supportedProps.classList = [].concat(props.className, classList);
     supportedProps.dir = componentDirection;
     // 'auto' by default allows browsers to infer writing direction (root elements only)
     if (!hasTextAncestor) {

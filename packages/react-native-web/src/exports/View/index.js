@@ -110,7 +110,6 @@ const View: React.AbstractComponent<ViewProps, HTMLElement & PlatformMethods> =
     const writingDirection = componentDirection || contextDirection;
 
     const supportedProps = pickProps(props);
-    supportedProps.classList = [].concat(props.className, classList);
     supportedProps.dir = componentDirection;
     supportedProps.style = [
       styles.view$raw,

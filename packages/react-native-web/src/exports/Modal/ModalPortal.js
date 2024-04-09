@@ -17,13 +17,18 @@ export type ModalPortalProps = {|
 |};
 
 function ModalPortal(props: ModalPortalProps): React.Node {
+  console.log("dddd portal called")
   const { children } = props;
   const elementRef = React.useRef(null);
 
+  console.log("dddd1", children, elementRef)
+
   if (canUseDOM && !elementRef.current) {
+    console.log("dddd2", canUseDOM, elementRef.current)
     const element = document.createElement('div');
 
     if (element && document.body) {
+      console.log("dddd3", element, document.body)
       document.body.appendChild(element);
       elementRef.current = element;
     }
@@ -32,6 +37,7 @@ function ModalPortal(props: ModalPortalProps): React.Node {
   React.useEffect(() => {
     if (canUseDOM) {
       return () => {
+        console.log("dddd4", document.body, elementRef.current)
         if (document.body && elementRef.current) {
           document.body.removeChild(elementRef.current);
           elementRef.current = null;
